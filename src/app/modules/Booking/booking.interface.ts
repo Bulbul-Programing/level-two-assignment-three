@@ -6,6 +6,7 @@ export type TBooking = {
     startTime : string
     endTime : string
     user ?: Types.ObjectId
+    payableAmount ?: number
     isBooked : 'confirmed' | 'canceled'
 }
 

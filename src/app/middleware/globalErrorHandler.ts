@@ -22,7 +22,6 @@ const globalErrorHandler = (
       message: 'something went wrong!',
     },
   ];
-  console.log(err);
   
   if (err instanceof ZodError) {
     const simpleError = handleZodError(err);

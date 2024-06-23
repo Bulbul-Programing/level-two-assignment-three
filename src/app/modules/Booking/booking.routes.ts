@@ -5,7 +5,9 @@ import { bookingValidation } from './booking.validation';
 import { bookingController } from './booking.controller';
 
 const router = express.Router()
-
+router.get('/', verifyToken('admin'), bookingController.getAllBookingAdmin)
 router.post('/', verifyToken('user'), validateRequest(bookingValidation.createBookingValidationSchema), bookingController.createBooking )
+router.get('/user', verifyToken('user'), bookingController.getAllBookingUser)
+router.delete('/:bookingId', verifyToken('user'), bookingController.cancelBooking)
 
 export const bookingRouter = router
