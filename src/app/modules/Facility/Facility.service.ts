@@ -2,6 +2,10 @@ import AppError from "../../error/AppError";
 import { TFacility } from "./Facility.interface";
 import { facilityModel } from "./Facility.model";
 
+const getAllFacilityIntoDb = async()=>{
+    const result = await facilityModel.find()
+    return result
+}
 
 const creteFacilityIntoDB = async (payload : TFacility) => {
     const result = await facilityModel.create(payload)
@@ -35,5 +39,6 @@ const deleteFacilityIntoDB = async (id : string) => {
 export const facilityService = {
     creteFacilityIntoDB,
     updateFacilityIntoDB,
-    deleteFacilityIntoDB
+    deleteFacilityIntoDB,
+    getAllFacilityIntoDb
 }

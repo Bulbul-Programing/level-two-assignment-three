@@ -2,6 +2,16 @@ import { Request, Response } from 'express';
 import { facilityService } from './Facility.service';
 import catchAsync from '../../utils/catchAsync';
 
+const getAllFacility = catchAsync(async (req: Request, res: Response) => {
+  const result = await facilityService.getAllFacilityIntoDb();
+
+  res.status(200).json({
+    success: true,
+    massage: 'Facility retrieved successfully',
+    data: result,
+  });
+});
+
 const createFacility = catchAsync(async (req: Request, res: Response) => {
   const result = await facilityService.creteFacilityIntoDB(req.body);
 
@@ -41,4 +51,5 @@ export const facilityController = {
   createFacility,
   updateFacility,
   deleteFacility,
+  getAllFacility
 };
