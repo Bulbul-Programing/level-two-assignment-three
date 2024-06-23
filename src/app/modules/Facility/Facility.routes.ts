@@ -7,6 +7,7 @@ import verifyToken from '../../middleware/verifyToken'
 const router= express.Router()
 
 router.post('/',verifyToken('admin'), validateRequest(facilityValidation.createFacilityValidationSchema), facilityController.createFacility)
+router.patch('/:facilityId', verifyToken('admin'), validateRequest(facilityValidation.updateFacilityValidationSchema), facilityController.updateFacility)
 
 export const facilityRoute = router
 

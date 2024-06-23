@@ -12,6 +12,20 @@ const createFacility = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateFacility = catchAsync(async (req: Request, res: Response) => {
+  const {facilityId} = req.params
+  const result = await facilityService.updateFacilityIntoDB( facilityId,req.body);
+
+  res.status(200).json({
+    success: true,
+    massage: 'Facility update successfully',
+    data: result,
+  });
+});
+
+
+
 export const facilityController = {
   createFacility,
+  updateFacility
 };
