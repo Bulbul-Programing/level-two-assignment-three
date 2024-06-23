@@ -2,8 +2,8 @@ import express from 'express';
 import { facilityRoute } from '../modules/Facility/Facility.routes';
 import { userRouter } from '../modules/user/user.routes';
 import { loginRoute } from '../modules/auth/auth.routes';
-import { checkAvailabilityRoutes } from '../modules/CheckAvailability/CheckAvailability.routes';
 import { bookingRouter } from '../modules/Booking/booking.routes';
+import { checkAvailabilityRouter } from '../modules/CheckAvailability/checkAvailability.routes';
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ const moduleRoutes = [
   },
   {
     path: '/check-availability',
-    route: checkAvailabilityRoutes,
+    route: checkAvailabilityRouter,
   },
   {
     path: '/bookings',

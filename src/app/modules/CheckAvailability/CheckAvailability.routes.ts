@@ -1,7 +1,8 @@
-import express from 'express';
+import express from 'express'
+import { checkAvailabilityController } from './checkAvailability.controller'
 
 const router = express.Router()
 
-router.get('/', )
+router.get('/', checkAvailabilityController.checkAvailability)
 
-export const checkAvailabilityRoutes = router
+export const checkAvailabilityRouter = router

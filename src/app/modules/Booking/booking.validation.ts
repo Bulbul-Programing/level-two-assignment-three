@@ -12,26 +12,8 @@ const timeStringSchema = z.string().refine(
 
 const dateStringSchema = z.string().refine(
   (date) => {
-    const regex = /^(?:(?:19|20)\d\d)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$/; // YYYY-MM-DD format
-    if (!regex.test(date)) {
-      return false;
-    }
-    const [year, month, day] = date.split('-').map(Number);
-    const isLeapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-
-    if (month === 2) {
-      if (isLeapYear) {
-        return day <= 29;
-      } else {
-        return day <= 28;
-      }
-    }
-
-    if ([4, 6, 9, 11].includes(month)) {
-      return day <= 30;
-    }
-
-    return day <= 31;
+    const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/; // YYYY-MM-DD format
+    return regex.test(date);
   },
   {
     message: 'Invalid date format, expected "YYYY-MM-DD"',
