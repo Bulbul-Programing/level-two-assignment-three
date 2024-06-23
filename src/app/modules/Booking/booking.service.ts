@@ -10,7 +10,6 @@ const createBookingIntoDB = async (
   userData: Record<string, unknown>,
   payload: TBooking,
 ) => {
-  // console.log(userData);
   // checking user exist
   const user = await userModel.findOne({ email: userData.email });
 
@@ -28,13 +27,13 @@ const createBookingIntoDB = async (
 
   const totalHours = calculateHours(payload.startTime, payload.endTime);
   
-  payload.payableAmount = totalHours * isFacilityExist.pricePerHour
-    console.log(payload);
+  payload.payableAmount = Number((totalHours * isFacilityExist.pricePerHour).toFixed(2))
+   
   const result = await bookingModel.create(payload);
   return result;
 };
 
-const getAllBookingIntoDB = async () => {
+const getAllBookingAdminIntoDB = async () => {
   const result = await bookingModel.find().populate('user').populate('facility');
   if(result.length < 1){
     throw new AppError(404, 'No data found')
@@ -42,8 +41,8 @@ const getAllBookingIntoDB = async () => {
   return result;
 };
 
-const getAllBookingUserIntoDB = async () => {
-  const result = await bookingModel.find().populate('user');
+const getAllBookingUserIntoDB = async (userId : string) => {
+  const result = await bookingModel.find({user : userId}).populate('user');
   if(result.length < 1){
     throw new AppError(404, 'No data found')
   }
@@ -63,7 +62,7 @@ const cancelBookingIntoDB = async (id: string) => {
 
 export const bookingService = {
   createBookingIntoDB,
-  getAllBookingIntoDB,
+  getAllBookingAdminIntoDB,
   getAllBookingUserIntoDB,
   cancelBookingIntoDB
 };

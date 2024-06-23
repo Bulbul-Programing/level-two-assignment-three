@@ -27,7 +27,7 @@ const verifyToken = (...requiredRoles: TUserRole[]) => {
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(401, 'You are not authorized!');
+      throw new AppError(401, 'You have no access to this route!');
     }
 
     req.user = decoded as JwtPayload;

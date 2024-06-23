@@ -8,7 +8,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     massage: 'user login successfully',
-    accessToken: result,
+    token: result.accessToken,
+    data : result.userData
   });
 });
 

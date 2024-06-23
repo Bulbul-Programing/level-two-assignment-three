@@ -14,7 +14,7 @@ const getAllBookingUser = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(404, 'user not found');
   }
 
-  const result = await bookingService.getAllBookingUserIntoDB();
+  const result = await bookingService.getAllBookingUserIntoDB(req.user.userId);
   res.status(200).json({
     success: true,
     massage: 'Bookings retrieved successfully',
@@ -30,7 +30,7 @@ const getAllBookingAdmin = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(404, 'user not found');
   }
 
-  const result = await bookingService.getAllBookingIntoDB();
+  const result = await bookingService.getAllBookingAdminIntoDB();
 
   res.status(200).json({
     success: true,

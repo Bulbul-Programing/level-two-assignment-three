@@ -21,11 +21,11 @@ const moduleRoutes = [
     route: loginRoute,
   },
   {
-    path: '/auth/check-availability',
+    path: '/check-availability',
     route: checkAvailabilityRoutes,
   },
   {
-    path: '/auth/bookings',
+    path: '/bookings',
     route: bookingRouter,
   },
 ];
