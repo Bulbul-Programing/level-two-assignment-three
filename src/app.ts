@@ -12,7 +12,7 @@ app.use('/api', router)
 app.use(globalErrorHandler)
 
 app.get('/', (req : Request, res : Response) => {
-  res.send('Hello World!')
+  res.send('server is running now')
 })
 
 app.use((req : Request, res : Response) => {
