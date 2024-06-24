@@ -1,7 +1,9 @@
+import { getAvailability } from "./checkAvilability.utils"
 
 
 const checkAvailabilityIntoDB = async (date : string) => {
-    console.log(date);
+   const availableTime = await getAvailability(date)
+   return availableTime
 }
 
 export const checkAvailabilityServer = {
