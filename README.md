@@ -16,7 +16,5 @@ npm install
 #### Contact me for the .env file.
 Running the Application
 npm start
-Additional Notes
-- Ensure MongoDB is running on your system and the URI provided in the .env file is correct.
 - You can access the application at http://localhost:5000
 ### Thank You.
