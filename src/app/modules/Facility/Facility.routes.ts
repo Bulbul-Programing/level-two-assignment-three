@@ -10,5 +10,5 @@ router.post('/',verifyToken('admin'), validateRequest(facilityValidation.createF
 router.put('/:facilityId', verifyToken('admin'), validateRequest(facilityValidation.updateFacilityValidationSchema), facilityController.updateFacility)
 router.delete('/:facilityId', verifyToken('admin'), facilityController.deleteFacility)
 
-export const facilityRoute = router
+export const facilityRoute = router  
 
