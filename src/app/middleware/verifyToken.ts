@@ -9,7 +9,6 @@ import AppError from '../error/AppError';
 const verifyToken = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const tokenWithBearer = req.headers.authorization;
-    console.log(tokenWithBearer);
 
     if (!tokenWithBearer) {
       throw new AppError(401, 'You are not authorized!');
