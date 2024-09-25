@@ -38,6 +38,12 @@ const loginUser = async (payload: TLogin) => {
   return {accessToken, userData}
 };
 
+const getUserDataIntoDB = async(email : string) => {
+  const result = await userModel.findOne({email}).select({password : 0})
+  return result
+}
+
 export const loginService = {
   loginUser,
+  getUserDataIntoDB
 };

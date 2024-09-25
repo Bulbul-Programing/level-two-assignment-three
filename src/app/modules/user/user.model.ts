@@ -10,6 +10,7 @@ const userSchema = new Schema<TUser>({
     password  : {type : String, required : true, select: 0},
     role  : {type : String,enum : ['admin', 'user'], required : true},
     address  : {type : String, required : true},
+    profileImage : {type : String, required : true}
 })
 
 userSchema.pre('save', async function(next){

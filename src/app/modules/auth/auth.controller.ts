@@ -13,6 +13,18 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getUserData = catchAsync(async (req: Request, res: Response) => {
+  const email = req.params.email
+  const result = await loginService.getUserDataIntoDB(email);
+
+  res.status(200).json({
+    success: true,
+    massage: 'User data retrieve successfully',
+    data : result
+  });
+});
+
 export const loginController = {
-    loginUser
+    loginUser,
+    getUserData
 }

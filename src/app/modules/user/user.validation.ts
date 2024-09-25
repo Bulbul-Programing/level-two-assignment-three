@@ -18,6 +18,10 @@ const createUserValidationSchema = z.object({
       required_error: 'phone is required',
       invalid_type_error: 'phone must be a string',
     }),
+    profileImage: z.string({
+      required_error: 'Profile image is required',
+      invalid_type_error: 'Profile image must be a string',
+    }),
     role: z.enum(['admin', 'user']),
     address: z.string({
       required_error: 'address is required',
