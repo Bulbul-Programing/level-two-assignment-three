@@ -60,15 +60,31 @@ class QueryBuilder<T> {
     const maxValue = this.query.maxValue ? Number(this.query.maxValue) : null;
 
     const priceFilter = {
-      price: {
-        $gt: minValue,
-        $lt: maxValue,
+      pricePerHour: {
+        $gte: minValue,
+        $lte: maxValue,
       },
     };
 
-    if (minValue !== null || maxValue !== null) {
+    if (minValue !== null && maxValue === null) {
+      const priceFilter = {
+        pricePerHour: {
+          $gte: minValue,
+        },
+      };
       this.modelQuery = this.modelQuery.find(priceFilter);
     }
+    else if (minValue === null && maxValue !== null) {
+      const priceFilter = {
+        pricePerHour: {
+          $lte: maxValue,
+        },
+      };
+      this.modelQuery = this.modelQuery.find(priceFilter);
+    }
+    else (
+      this.modelQuery = this.modelQuery.find(priceFilter)
+    )
     return this;
   }
 
