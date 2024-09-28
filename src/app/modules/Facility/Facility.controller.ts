@@ -3,7 +3,8 @@ import { facilityService } from './Facility.service';
 import catchAsync from '../../utils/catchAsync';
 
 const getAllFacility = catchAsync(async (req: Request, res: Response) => {
-  const result = await facilityService.getAllFacilityIntoDb();
+  const query = req.query
+  const result = await facilityService.getAllFacilityIntoDb(query);
 
   res.status(200).json({
     success: true,

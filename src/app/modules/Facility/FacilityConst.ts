@@ -1,0 +1,1 @@
+export const facilitySearchAbleFields: string[] = ['name', 'description'];

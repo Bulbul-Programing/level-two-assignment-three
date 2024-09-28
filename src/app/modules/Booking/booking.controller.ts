@@ -14,7 +14,7 @@ const getAllBookingUser = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(404, 'user not found');
   }
 
-  const result = await bookingService.getAllBookingUserIntoDB(req.user.userId);
+  const result = await bookingService.getAllBookingUserIntoDB(req.user.userId, req.query);
   res.status(200).json({
     success: true,
     massage: 'Bookings retrieved successfully',

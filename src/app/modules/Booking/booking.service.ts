@@ -5,6 +5,8 @@ import { userModel } from '../user/user.model';
 import AppError from '../../error/AppError';
 import { calculateHours } from './booking.utils';
 import { facilityModel } from '../Facility/Facility.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { bookingSearchAbleFields } from './bookingConst';
 
 const createBookingIntoDB = async (
   userData: Record<string, unknown>,
@@ -26,25 +28,46 @@ const createBookingIntoDB = async (
   }
 
   const totalHours = calculateHours(payload.startTime, payload.endTime);
-  
-  payload.payableAmount = Number((totalHours * isFacilityExist.pricePerHour).toFixed(2))
-   
+
+  payload.payableAmount = Number(
+    (totalHours * isFacilityExist.pricePerHour).toFixed(2),
+  );
+
   const result = await bookingModel.create(payload);
   return result;
 };
 
 const getAllBookingAdminIntoDB = async () => {
-  const result = await bookingModel.find().populate('user').populate('facility');
-  if(result.length < 1){
-    throw new AppError(404, 'No data found')
+  const result = await bookingModel
+    .find()
+    .populate('user')
+    .populate('facility');
+  if (result.length < 1) {
+    throw new AppError(404, 'No data found');
   }
   return result;
 };
 
-const getAllBookingUserIntoDB = async (userId : string) => {
-  const result = await bookingModel.find({user : userId}).populate('user');
-  if(result.length < 1){
-    throw new AppError(404, 'No data found')
+const getAllBookingUserIntoDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const bookingQuery = new QueryBuilder(
+    bookingModel.find({ user: userId }).populate('facility'),
+    query,
+  )
+    .searching(bookingSearchAbleFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields()
+    .priceFilter()
+    .futureField()
+    
+  // const result = await bookingModel.find({user : userId}).populate('user');
+  const result = await bookingQuery.modelQuery;
+  if (result.length < 1) {
+    throw new AppError(404, 'No data found');
   }
   return result;
 };
@@ -52,17 +75,21 @@ const getAllBookingUserIntoDB = async (userId : string) => {
 const cancelBookingIntoDB = async (id: string) => {
   // checking is booking is exist
 
-  const isBookingExist = await bookingModel.findById(id)
-  if(!isBookingExist){
-    throw new AppError(404, 'Booking not found')
+  const isBookingExist = await bookingModel.findById(id);
+  if (!isBookingExist) {
+    throw new AppError(404, 'Booking not found');
   }
-  const result = await bookingModel.findByIdAndUpdate(id, {isBooked : 'canceled'}, {new : true})
-  return result
-}
+  const result = await bookingModel.findByIdAndUpdate(
+    id,
+    { isBooked: 'canceled' },
+    { new: true },
+  );
+  return result;
+};
 
 export const bookingService = {
   createBookingIntoDB,
   getAllBookingAdminIntoDB,
   getAllBookingUserIntoDB,
-  cancelBookingIntoDB
+  cancelBookingIntoDB,
 };

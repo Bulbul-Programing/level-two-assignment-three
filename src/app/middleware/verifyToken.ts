@@ -9,18 +9,17 @@ import AppError from '../error/AppError';
 const verifyToken = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const tokenWithBearer = req.headers.authorization;
-
+    
     if (!tokenWithBearer) {
       throw new AppError(401, 'You are not authorized!');
     }
 
     const token = tokenWithBearer?.split(' ')[1]
-
+    
     const decoded = jwt.verify(
       token,
       config.accessTokenSecrete as string,
     ) as JwtPayload;
-
     const { email, role, iat } = decoded;
     const user = await isUserExist(email);
 
