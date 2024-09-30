@@ -1,11 +1,11 @@
 import { bookingModel } from '../Booking/booking.model';
 import { TAvailableTime } from './checkAvailability.interface';
 
-export const getAvailability = async (date: string) => {
+export const getAvailability = async (date: string, facility : string) => {
   const findBookingThisDate = await bookingModel
-    .find({ date })
+    .find({ date , facility})
     .sort({ startTime: 1 });
-
+    
   if (findBookingThisDate.length < 1) {
     const availableTime: TAvailableTime[] = [
       {
@@ -19,6 +19,9 @@ export const getAvailability = async (date: string) => {
   const availableTime: TAvailableTime[] = [];
   let endTime: string = '';
   findBookingThisDate.forEach((booking) => {
+    if(booking.startTime === endTime){
+      return
+    }
     const time: TAvailableTime = {
       startTime: availableTime.length < 1 ? '00:00' : endTime,
       endTime: `${booking.startTime}`,

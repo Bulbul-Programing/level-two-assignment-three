@@ -5,6 +5,7 @@ import timeConflict from '../../utils/timeConflict';
 import { TDateAdnTime } from './booking.interface';
 import AppError from '../../error/AppError';
 import { userModel } from '../user/user.model';
+import { facilityModel } from '../Facility/Facility.model';
 
 const getAllBookingUser = catchAsync(async (req: Request, res: Response) => {
   // checking user exist
@@ -30,7 +31,8 @@ const getAllBookingAdmin = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(404, 'user not found');
   }
 
-  const result = await bookingService.getAllBookingAdminIntoDB();
+  const query = req.query
+  const result = await bookingService.getAllBookingAdminIntoDB(query);
 
   res.status(200).json({
     success: true,
@@ -66,15 +68,15 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const cancelBooking = catchAsync(async(req: Request, res : Response)=>{
+const cancelBooking = catchAsync(async (req: Request, res: Response) => {
   // checking uer is exist
   const user = await userModel.findOne({ email: req.user.email });
 
   if (!user) {
     throw new AppError(404, 'user not found');
   }
-  
-  const {bookingId} = req.params
+
+  const { bookingId } = req.params
   const result = await bookingService.cancelBookingIntoDB(bookingId)
 
   res.status(200).json({
@@ -83,10 +85,22 @@ const cancelBooking = catchAsync(async(req: Request, res : Response)=>{
     data: result,
   });
 })
+const updateBooking = catchAsync(async (req: Request, res: Response) => {
+  const updateBookingInfo = req.body
+  
+  const result = await bookingService.updateBookingIntoDB(updateBookingInfo)
+
+  res.status(200).json({
+    success: true,
+    massage: 'Booking Update successfully',
+    data: result,
+  });
+})
 
 export const bookingController = {
   createBooking,
   getAllBookingAdmin,
   getAllBookingUser,
-  cancelBooking
+  cancelBooking,
+  updateBooking
 };

@@ -1,8 +1,8 @@
 import { getAvailability } from "./checkAvilability.utils"
 
 
-const checkAvailabilityIntoDB = async (date : string) => {
-   const availableTime = await getAvailability(date)
+const checkAvailabilityIntoDB = async (date : string, facility : string) => {
+   const availableTime = await getAvailability(date, facility)
    return availableTime
 }
 

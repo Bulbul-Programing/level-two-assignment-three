@@ -9,6 +9,15 @@ export type TBooking = {
     payableAmount ?: number
     isBooked : 'confirmed' | 'canceled'
 }
+export type TUpdateBooking = {
+    facility : string
+    _id : Types.ObjectId
+    date ?: string
+    startTime ?: string
+    endTime ?: string
+    isBooked ?: 'confirmed' | 'canceled'
+    payableAmount ?: number
+}
 
 export type TDateAdnTime = {
     date : string

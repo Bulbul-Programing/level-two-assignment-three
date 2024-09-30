@@ -12,6 +12,25 @@ const getAllFacility = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getFacilityDetails = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+  const result = await facilityService.getFacilityDetails(id);
+
+  res.status(200).json({
+    success: true,
+    massage: 'Facility details retrieved successfully',
+    data: result,
+  });
+});
+const getAllFacilityForLength = catchAsync(async (req: Request, res: Response) => {
+  const result = await facilityService.getAllFacilityLengthIntoDB();
+
+  res.status(200).json({
+    success: true,
+    massage: 'Facility retrieved successfully',
+    data: result,
+  });
+});
 
 const createFacility = catchAsync(async (req: Request, res: Response) => {
   const result = await facilityService.creteFacilityIntoDB(req.body);
@@ -52,5 +71,7 @@ export const facilityController = {
   createFacility,
   updateFacility,
   deleteFacility,
-  getAllFacility
+  getAllFacility,
+  getAllFacilityForLength,
+  getFacilityDetails
 };

@@ -3,7 +3,7 @@ import { facilityRoute } from '../modules/Facility/Facility.routes';
 import { userRouter } from '../modules/user/user.routes';
 import { loginRoute } from '../modules/auth/auth.routes';
 import { bookingRouter } from '../modules/Booking/booking.routes';
-import { checkAvailabilityRouter } from '../modules/CheckAvailability/checkAvailability.routes';
+import { checkAvailabilityRouter } from '../modules/CheckAvailability/CheckAvailability.routes';
 
 const router = express.Router();
 

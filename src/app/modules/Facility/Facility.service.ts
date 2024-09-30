@@ -12,10 +12,18 @@ const getAllFacilityIntoDb = async (query: Record<string, unknown>) => {
     .paginate()
     .fields()
     .priceFilter()
-    .futureField();
   const result = await facilityQuery.modelQuery
   return result;
 };
+
+const getAllFacilityLengthIntoDB = async () =>{
+  const result = await facilityModel.find()
+  return result
+}
+const getFacilityDetails = async (id:string) =>{
+  const result = await facilityModel.findById(id)
+  return result
+}
 
 const creteFacilityIntoDB = async (payload: TFacility) => {
   const result = await facilityModel.create(payload);
@@ -58,4 +66,6 @@ export const facilityService = {
   updateFacilityIntoDB,
   deleteFacilityIntoDB,
   getAllFacilityIntoDb,
+  getFacilityDetails,
+  getAllFacilityLengthIntoDB
 };

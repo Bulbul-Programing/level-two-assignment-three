@@ -31,13 +31,27 @@ const createBookingValidationSchema = z.object({
     endTime: timeStringSchema,
     user: z
       .string({
-        invalid_type_error: 'end Time must be a string',
+        invalid_type_error: 'user must be a string',
       })
       .optional(),
+    isBooked: z.enum(['confirmed', 'canceled']).optional(),
+  }),
+});
+const updateBookingValidationSchema = z.object({
+  body: z.object({
+    facility: z.string({
+      required_error: 'facility is required',
+      invalid_type_error: 'facility must be a string',
+    }),
+    _id : z.string({invalid_type_error : 'Id must be a string'}),
+    date:dateStringSchema.optional(),
+    startTime: timeStringSchema.optional(),
+    endTime: timeStringSchema.optional(),
     isBooked: z.enum(['confirmed', 'canceled']).optional(),
   }),
 });
 
 export const bookingValidation = {
   createBookingValidationSchema,
+  updateBookingValidationSchema
 };

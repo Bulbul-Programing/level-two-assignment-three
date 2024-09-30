@@ -9,6 +9,6 @@ const bookingSchema = new Schema<TBooking>({
     payableAmount : {type : Number , required : false},
     user : {type : Schema.Types.ObjectId, required : false, ref : 'user'},
     isBooked : {type : String , enum : ['confirmed','canceled'], default: 'confirmed'}
-})
+},{timestamps : true})
 
 export const bookingModel = model<TBooking>('booking', bookingSchema)
