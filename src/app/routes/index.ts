@@ -13,7 +13,7 @@ const moduleRoutes = [
     route: facilityRoute,
   },
   {
-    path: '/auth/signup',
+    path: '/auth',
     route: userRouter,
   },
   {

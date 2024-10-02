@@ -5,7 +5,7 @@ import { facilityModel } from './Facility.model';
 import { facilitySearchAbleFields } from './FacilityConst';
 
 const getAllFacilityIntoDb = async (query: Record<string, unknown>) => {
-  const facilityQuery = new QueryBuilder(facilityModel.find(), query)
+  const facilityQuery = new QueryBuilder(facilityModel.find({isDeleted : false}), query)
     .searching(facilitySearchAbleFields)
     .filter()
     .sort()

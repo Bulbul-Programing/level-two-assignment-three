@@ -11,6 +11,15 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  const params = req.params.role
+  const result = await userService.getAllUserIntoDB(params);
+  res.status(200).json({
+    success: true,
+    massage: 'User retrieve successfully',
+    data: result,
+  });
+});
 
 const isExistUser = catchAsync(async (req: Request, res: Response) => {
   const email = req.params.email
@@ -24,5 +33,6 @@ const isExistUser = catchAsync(async (req: Request, res: Response) => {
 
 export const userController = {
   createUser,
-  isExistUser
+  isExistUser,
+  getAllUser
 };

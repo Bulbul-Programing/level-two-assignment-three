@@ -14,6 +14,10 @@ const createFacilityValidationSchema = z.object({
       required_error: 'price per hour is required',
       invalid_type_error: 'price per hour must be a number',
     }),
+    image: z.string({
+      required_error: 'Image is required',
+      invalid_type_error: 'Image must be a string',
+    }),
     location: z.string({
       required_error: 'Location is required',
       invalid_type_error: 'Location must be a string',

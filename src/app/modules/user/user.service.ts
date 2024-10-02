@@ -7,6 +7,11 @@ const createNewUserIntoDB = async(payload : TUser) => {
     return userData
 }
 
+const getAllUserIntoDB = async (role : string) =>{
+    const result = await userModel.find({role})
+    return result
+}
+
 const isExistUserIntoDB = async (email : string) => {
     const result = await userModel.findOne({email})
     return result
@@ -14,5 +19,6 @@ const isExistUserIntoDB = async (email : string) => {
 
 export const userService = {
     createNewUserIntoDB,
-    isExistUserIntoDB
+    isExistUserIntoDB,
+    getAllUserIntoDB
 }
