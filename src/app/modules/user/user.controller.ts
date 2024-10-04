@@ -13,7 +13,8 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   const params = req.params.role
-  const result = await userService.getAllUserIntoDB(params);
+  const query = req.query
+  const result = await userService.getAllUserIntoDB(params, query);
   res.status(200).json({
     success: true,
     massage: 'User retrieve successfully',
@@ -31,8 +32,19 @@ const isExistUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const delateUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.userId
+  const result = await userService.deleteUserIntoDB(id);
+  res.status(200).json({
+    success: true,
+    massage: 'User delate successfully',
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   isExistUser,
-  getAllUser
+  getAllUser,
+  delateUser
 };
