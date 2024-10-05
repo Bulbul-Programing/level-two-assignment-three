@@ -8,6 +8,8 @@ export type TBooking = {
     user ?: Types.ObjectId
     payableAmount ?: number
     isBooked : 'confirmed' | 'canceled'
+    paymentStatus : string,
+    transitionId : string
 }
 export type TUpdateBooking = {
     facility : string

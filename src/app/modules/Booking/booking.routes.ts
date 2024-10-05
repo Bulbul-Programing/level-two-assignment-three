@@ -10,5 +10,5 @@ router.post('/', verifyToken('user'), validateRequest(bookingValidation.createBo
 router.get('/user', verifyToken('user'), bookingController.getAllBookingUser)
 router.delete('/:bookingId', verifyToken('user'), bookingController.cancelBooking)
 router.put('/updateBooing', verifyToken('user'), validateRequest(bookingValidation.updateBookingValidationSchema), bookingController.updateBooking)
-
+router.post('/updateBooking/payment/:transitionId', bookingController.updateBookingPaymentStatus)
 export const bookingRouter = router

@@ -7,6 +7,8 @@ const bookingSchema = new Schema<TBooking>({
     startTime : {type : String, required : true},
     endTime : {type : String, required : true},
     payableAmount : {type : Number , required : false},
+    paymentStatus : {type : String, required : true},
+    transitionId : {type : String, required : true},
     user : {type : Schema.Types.ObjectId, required : false, ref : 'user'},
     isBooked : {type : String , enum : ['confirmed','canceled'], default: 'confirmed'}
 },{timestamps : true})

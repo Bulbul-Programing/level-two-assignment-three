@@ -97,10 +97,23 @@ const updateBooking = catchAsync(async (req: Request, res: Response) => {
   });
 })
 
+const updateBookingPaymentStatus = catchAsync(async (req: Request, res: Response) => {
+  const transitionId = req.params.transitionId
+  const query = req.query
+  const result = await bookingService.updateBookingPaymentStatusIntoDB(transitionId, query)
+  if(result?.paymentStatus === 'paid'){
+    res.redirect('https://assignment-five-three.vercel.app/paymentSuccess')
+  }
+  if(result?.paymentStatus === 'unpaid'){
+    res.redirect('https://assignment-five-three.vercel.app/paymentFelid')
+  }
+})
+
 export const bookingController = {
   createBooking,
   getAllBookingAdmin,
   getAllBookingUser,
   cancelBooking,
-  updateBooking
+  updateBooking,
+  updateBookingPaymentStatus
 };

@@ -11,5 +11,7 @@ export default {
     accessTokenSecrete: process.env.ACCESS_TOKEN_SECRETE,
     refreshTokenSecrete: process.env.REFRESH_TOKEN_SECRETE,
     accessTokenExpire: process.env.ACCESS_TOKEN_EXPIRE,
-    refreshTokenExpire: process.env.REFRESH_TOKEN_EXPIRE
+    refreshTokenExpire: process.env.REFRESH_TOKEN_EXPIRE,
+    sslcommerzStoreId : process.env.SSLCOMMERZ_STORE_ID,
+    sslcommerzSecretId : process.env.SSLCOMMERZ_SECRET_KEY
 }

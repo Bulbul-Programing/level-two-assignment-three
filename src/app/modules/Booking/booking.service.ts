@@ -39,7 +39,7 @@ const createBookingIntoDB = async (
   return result;
 };
 
-const getAllBookingAdminIntoDB = async ( query: Record<string, unknown>,) => {
+const getAllBookingAdminIntoDB = async (query: Record<string, unknown>) => {
   const bookingQuery = new QueryBuilder(
     bookingModel.find().populate('facility').populate('user'),
     query,
@@ -50,9 +50,9 @@ const getAllBookingAdminIntoDB = async ( query: Record<string, unknown>,) => {
     .paginate()
     .fields()
     .priceFilter()
-    .futureField()
-  const result = await bookingQuery.modelQuery
-  
+    .futureField();
+  const result = await bookingQuery.modelQuery;
+
   return result;
 };
 
@@ -70,7 +70,7 @@ const getAllBookingUserIntoDB = async (
     .paginate()
     .fields()
     .priceFilter()
-    .futureField()
+    .futureField();
 
   // const result = await bookingModel.find({user : userId}).populate('user');
   const result = await bookingQuery.modelQuery;
@@ -123,19 +123,38 @@ const updateBookingIntoDB = async (payload: TUpdateBooking) => {
     payload.payableAmount = Number(
       (totalHours * isFacilityExist.pricePerHour).toFixed(2),
     );
-
   }
   const result = await bookingModel.findByIdAndUpdate(payload._id, payload, {
     new: true,
     runValidators: true,
-  })
-  return result
-}
+  });
+  return result;
+};
+
+const updateBookingPaymentStatusIntoDB = async (
+  transitionId: string,
+  query: Record<string, unknown>,
+) => {
+  if (query.status === 'paid') {
+    const result = await bookingModel.findOneAndUpdate(
+      { transitionId },
+      { paymentStatus: query.status },
+      {
+        new: true,
+      },
+    );
+    return result;
+  }
+  if(query.status === 'unpaid'){
+    const result = await bookingModel.deleteOne({transitionId})
+  }
+};
 
 export const bookingService = {
   createBookingIntoDB,
   getAllBookingAdminIntoDB,
   getAllBookingUserIntoDB,
   cancelBookingIntoDB,
-  updateBookingIntoDB
+  updateBookingIntoDB,
+  updateBookingPaymentStatusIntoDB,
 };
