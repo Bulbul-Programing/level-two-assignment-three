@@ -1,12 +1,13 @@
 import config from '../../config';
 import SSLCommerzPayment from 'sslcommerz-lts';
-import { TBooking } from '../Booking/booking.interface';
+import { TBooking, TDateAdnTime } from '../Booking/booking.interface';
 import { facilityModel } from '../Facility/Facility.model';
 import { userModel } from '../user/user.model';
 import AppError from '../../error/AppError';
 import { calculateHours } from '../Booking/booking.utils';
 import { ObjectId } from 'mongodb';
 import { bookingModel } from '../Booking/booking.model';
+import timeConflict from '../../utils/timeConflict';
 
 const store_id = config.sslcommerzStoreId;
 const store_passwd = config.sslcommerzSecretId;
@@ -25,10 +26,30 @@ const paymentProcessIntoDB = async (
   payload.user = user._id;
 
   // checking facility is existing
-  const isFacilityExist = await facilityModel.findById(payload.facility);
+  const isFacilityExist = await facilityModel.findOne({
+    _id: payload.facility,
+  });
 
   if (!isFacilityExist) {
     throw new AppError(404, 'Facility not found');
+  }
+
+  const dateAndTime: TDateAdnTime = {
+    date: payload.date,
+    startTime: payload.startTime,
+    endTime: payload.endTime,
+  };
+
+  // checking schedule is available in this time
+  const existSchedule = await timeConflict(
+    dateAndTime,
+    payload.facility.toString(),
+  );
+  if (existSchedule) {
+    throw new AppError(
+      500,
+      'This facility is not available at that time ! chose another time or day.',
+    );
   }
 
   const totalHours = calculateHours(payload.startTime, payload.endTime);
@@ -36,6 +57,7 @@ const paymentProcessIntoDB = async (
   payload.payableAmount = Number(
     (totalHours * isFacilityExist.pricePerHour).toFixed(2),
   );
+  // creating transitions id
   const tran_id = new ObjectId().toString();
 
   const data = {
@@ -43,8 +65,8 @@ const paymentProcessIntoDB = async (
     currency: 'BDT',
     tran_id: tran_id, // use unique tran_id for each api call
     success_url: `https://assignment-three-sable.vercel.app/api/bookings/updateBooking/payment/${tran_id}?status=paid`,
-    fail_url: `https://assignment-three-sable.vercel.app/api/bookings/updateBooking/payment/${tran_id}?status=unpaid`,
-    cancel_url: 'https://assignment-five-three.vercel.app/facility',
+    fail_url: `https://assignment-three-sable.vercel.app/api/payment/redirect/paymentFelid`,
+    cancel_url: 'https://assignment-three-sable.vercel.app/api/payment/redirect/facility',
     ipn_url: 'http://localhost:3030/ipn',
     shipping_method: 'Courier',
     product_name: 'Computer.',
@@ -73,17 +95,17 @@ const paymentProcessIntoDB = async (
   const generateLink = async () => {
     const res = await sslcz.init(data).then((apiResponse: any) => {
       let GatewayPageURL = apiResponse.GatewayPageURL;
-      return GatewayPageURL
+      return GatewayPageURL;
     });
-    return res
+    return res;
   };
-  payload.paymentStatus = 'unpaid'
-  payload.transitionId = tran_id
+  payload.paymentStatus = 'unpaid';
+  payload.transitionId = tran_id;
 
-  const addBooking = await bookingModel.create(payload)
+  const addBooking = await bookingModel.create(payload);
 
-  const url = await generateLink()
-  return url
+  const url = await generateLink();
+  return url;
 };
 
 export const paymentGatewayService = {

@@ -145,9 +145,6 @@ const updateBookingPaymentStatusIntoDB = async (
     );
     return result;
   }
-  if(query.status === 'unpaid'){
-    const result = await bookingModel.deleteOne({transitionId})
-  }
 };
 
 export const bookingService = {
